@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  app:
+    image: drafts
+    ports:
+      - 80:80
+    command:
+      ["/app/bin/drafts"]

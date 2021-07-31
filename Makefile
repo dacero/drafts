@@ -1,4 +1,4 @@
 dbuild:
 	docker build -t drafts .
 drun:
-	docker run drafts
+	docker-compose up -d
