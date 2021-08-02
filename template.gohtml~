@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drafts</title>
+    <meta name="author" content="da0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/drafts/style.css" type="text/css">
+  </head>
+
+  <body>
+    {{.HTMLBody}}
+  </body>
+</html>

@@ -7,3 +7,5 @@ services:
       - 80:80
     command:
       ["/app/bin/drafts"]
+    volumes:
+      - ./drafts:/app/drafts

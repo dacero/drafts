@@ -1,3 +1,53 @@
+/* -----------------------------------
+Base
+-------------------------------------- */
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    font-feature-settings: "kern" 1,"liga" 1;
+    min-height: 0vw;
+}
+
 html {
-    font-family: Helvetica, Arial, sans-serif;
+    background-color: white;
+    color: black;
+    font-family: "Hoefler Text", Georgia, serif;
+    font-size: 24px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 5vw;
+}
+
+body {
+    max-width: 28rem;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+h2, h3 {
+    font-size: 1.2rem;
+}
+
+img {
+    text-align: center;
+    max-width: 100%;
+}
+
+blockquote {
+    margin-left: 0;
+    padding-left: 1rem;
+    border-left: solid 2px gray;
+}
+
+@media print {
+    html {
+	font-size: 12px;
+	line-height: 2;
+    }
 }
