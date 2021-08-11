@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drafts</title>
+    <meta name="author" content="da0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/print.css" type="text/css" media="print">
+  </head>
+
+  <body>
+    <ul>
+      {{$dir := .}}
+      {{range $dir.Files}}
+      <li>
+	<a href="./view?filename={{.Filename}}">{{.Filename}}</a>
+      </li>
+      {{end}}
+    </ul>
+  </body>
+</html>

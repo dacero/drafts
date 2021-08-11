@@ -18,6 +18,15 @@ type Draft struct {
 	Body    string
 }
 
+type DraftFile struct {
+	Filename   string
+}
+
+type DraftsDirectory struct {
+	Name    string
+	Files   []DraftFile
+}
+
 func (d Draft) HTMLBody() string {
 	groomedString := strings.ReplaceAll(d.Body, "\r\n", "\n")
 	unsafe := blackfriday.Run([]byte(groomedString))
@@ -26,7 +35,11 @@ func (d Draft) HTMLBody() string {
 }
 
 func serveTemplate(w http.ResponseWriter, t *http.Request) {
-	template, err := template.ParseFiles("./template.gohtml")
+	fmt.Println("Listing drafts directory")
+	myDir := listDraftDirectory()
+	fmt.Printf("Now the items are: %s\n", len(myDir.Files))
+	
+	template, err := template.ParseFiles("./templates/template.gohtml")
 	if err != nil {
 		log.Printf("Error when opening the template: %s", err)
 	}
@@ -43,6 +56,19 @@ func serveTemplate(w http.ResponseWriter, t *http.Request) {
 	}
 }
 
+func viewDirectory(w http.ResponseWriter, r *http.Request) {
+	draftsDir := listDraftDirectory()
+	template, err := template.ParseFiles("./templates/dir.gohtml")
+	if err != nil {
+		log.Printf("Error when opening the template: %s", err)
+	}
+	err = template.Execute(w, draftsDir)
+	if err != nil {
+		log.Printf("Error when executing the template: %s", err)
+	}
+}
+
+
 func viewDraft(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -50,7 +76,7 @@ func viewDraft(w http.ResponseWriter, r *http.Request) {
 	}
 	filename := r.FormValue("filename")
 
-	template, err := template.ParseFiles("./template.gohtml")
+	template, err := template.ParseFiles("./templates/template.gohtml")
 	if err != nil {
 		fmt.Fprintf(w, "Error when opening the template: %s", err)
 		return
@@ -70,10 +96,29 @@ func viewDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func listDraftDirectory() DraftsDirectory {
+	draftsDirectoryPath := "./drafts/"
+	files, err := ioutil.ReadDir(draftsDirectoryPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	draftFiles := []DraftFile{}
+	fmt.Println("I'm going to start iterating through files...")
+	for _, f := range files {
+		fmt.Println(f.Name())
+		draftFiles = append(draftFiles, DraftFile{Filename: f.Name()})
+		fmt.Printf("Current number of items: %s\n", len(draftFiles))
+	}
+	fmt.Println("Finished listing files")
+	d := DraftsDirectory{Name: "Drafts", Files: draftFiles}
+	return d
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.HandleFunc("/", serveTemplate)
 	r.HandleFunc("/view", viewDraft)
+	r.HandleFunc("/dir", viewDirectory)
 	log.Fatal(http.ListenAndServe(":80", r))
 }
