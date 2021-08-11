@@ -13,7 +13,11 @@
       {{$dir := .}}
       {{range $dir.Files}}
       <li>
-	<a href="./view?filename={{.Filename}}">{{.Filename}}</a>
+	{{if .IsDir}}
+	<a href="./dir?dir={{.Path}}">{{.Filename}}</a>
+	{{else}}
+	<a href="./view?filepath={{.Path}}">{{.Filename}}</a>
+	{{end}}
       </li>
       {{end}}
     </ul>

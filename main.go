@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -20,6 +21,8 @@ type Draft struct {
 
 type DraftFile struct {
 	Filename   string
+	Path       string // always relative to basepath
+	IsDir      bool
 }
 
 type DraftsDirectory struct {
@@ -36,7 +39,7 @@ func (d Draft) HTMLBody() string {
 
 func serveTemplate(w http.ResponseWriter, t *http.Request) {
 	fmt.Println("Listing drafts directory")
-	myDir := listDraftDirectory()
+	myDir, _ := listDraftDirectory("./drafts/")
 	fmt.Printf("Now the items are: %s\n", len(myDir.Files))
 	
 	template, err := template.ParseFiles("./templates/template.gohtml")
@@ -57,7 +60,18 @@ func serveTemplate(w http.ResponseWriter, t *http.Request) {
 }
 
 func viewDirectory(w http.ResponseWriter, r *http.Request) {
-	draftsDir := listDraftDirectory()
+	if err := r.ParseForm(); err != nil {
+		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		return
+	}
+	dirpath := r.FormValue("dir")
+	
+	draftsDir, err := listDraftDirectory("./" + dirpath)
+	if err != nil {
+		fmt.Fprintf(w, "Error when opening the directory: %s", err)
+		return
+	}
+
 	template, err := template.ParseFiles("./templates/dir.gohtml")
 	if err != nil {
 		log.Printf("Error when opening the template: %s", err)
@@ -74,7 +88,7 @@ func viewDraft(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
 	}
-	filename := r.FormValue("filename")
+	filepath := r.FormValue("filepath")
 
 	template, err := template.ParseFiles("./templates/template.gohtml")
 	if err != nil {
@@ -82,7 +96,7 @@ func viewDraft(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	d, err := ioutil.ReadFile("./drafts/" + filename)
+	d, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		fmt.Fprintf(w, "Error when opening the draft: %s", err)
 		return
@@ -96,22 +110,23 @@ func viewDraft(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func listDraftDirectory() DraftsDirectory {
-	draftsDirectoryPath := "./drafts/"
-	files, err := ioutil.ReadDir(draftsDirectoryPath)
-	if err != nil {
-		log.Fatal(err)
-	}
+func listDraftDirectory(dirpath string) (DraftsDirectory, error) {
 	draftFiles := []DraftFile{}
+	files, err := ioutil.ReadDir(dirpath)
+	if err != nil {
+		return DraftsDirectory{}, err
+	}
 	fmt.Println("I'm going to start iterating through files...")
 	for _, f := range files {
 		fmt.Println(f.Name())
-		draftFiles = append(draftFiles, DraftFile{Filename: f.Name()})
+		draftFiles = append(draftFiles, DraftFile{Filename: f.Name(),
+			Path: filepath.Join(dirpath, f.Name()),
+			IsDir: f.IsDir()})
 		fmt.Printf("Current number of items: %s\n", len(draftFiles))
 	}
 	fmt.Println("Finished listing files")
 	d := DraftsDirectory{Name: "Drafts", Files: draftFiles}
-	return d
+	return d, nil
 }
 
 func main() {
