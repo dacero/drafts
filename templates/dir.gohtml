@@ -4,8 +4,7 @@
     <title>Drafts</title>
     <meta name="author" content="da0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css" type="text/css">
-    <link rel="stylesheet" href="/static/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="/static/dir.css" type="text/css">
   </head>
 
   <body>
@@ -14,9 +13,9 @@
       {{range $dir.Files}}
       <li>
 	{{if .IsDir}}
-	<a href="./dir?dir={{.Path}}">{{.Filename}}</a>
+	<a href="./dir?dir={{.Path}}"><span class="dir">{{.Filename}}</span></a>
 	{{else}}
-	<a href="./view?filepath={{.Path}}">{{.Filename}}</a>
+	<a href="./view?filepath={{.Path}}"><span class="draft">{{.Filename}}</span></a>
 	{{end}}
       </li>
       {{end}}

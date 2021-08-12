@@ -1,0 +1,44 @@
+html {
+    background: rgb(40, 40, 40);
+    color: rgb(250, 248, 244);
+    font-family: monospace;
+    font-size: 24px;
+}
+
+body {
+    max-width: 720px;
+    margin: 0 5vw;
+}
+
+a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: rgb(250, 248, 244);
+}
+
+.dir {
+    color: rgb(255, 255, 255, 0.4);
+}
+
+.dir::after {
+    content: "/";
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    display: block;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0.8em 0;
+    padding: 5px;
+    transition-duration: 0.2s;
+}
+
+ul li:hover {
+    background: rgb(50, 50, 50);
+}

@@ -121,7 +121,9 @@ func listDraftDirectory(dirpath string) (DraftsDirectory, error) {
 	}
 	for _, f := range files {
 		if (filepath.Ext(f.Name()) == ".md" || f.IsDir()) {
-			draftFiles = append(draftFiles, DraftFile{Filename: f.Name(),
+			filename := f.Name()
+			extension := filepath.Ext(f.Name())
+			draftFiles = append(draftFiles, DraftFile{Filename: filename[0:len(filename)-len(extension)],
 				Path: filepath.Join(dirpath, f.Name()),
 				IsDir: f.IsDir(),
 				ModTime: f.ModTime()})
