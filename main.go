@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+	"time"
+	"sort"
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
@@ -23,6 +25,7 @@ type DraftFile struct {
 	Filename   string
 	Path       string // always relative to basepath
 	IsDir      bool
+	ModTime    time.Time
 }
 
 type DraftsDirectory struct {
@@ -120,9 +123,13 @@ func listDraftDirectory(dirpath string) (DraftsDirectory, error) {
 		if (filepath.Ext(f.Name()) == ".md" || f.IsDir()) {
 			draftFiles = append(draftFiles, DraftFile{Filename: f.Name(),
 				Path: filepath.Join(dirpath, f.Name()),
-				IsDir: f.IsDir()})
+				IsDir: f.IsDir(),
+				ModTime: f.ModTime()})
 		}
 	}
+	sort.Slice(draftFiles, func(i, j int) bool {
+		return draftFiles[i].ModTime.After(draftFiles[j].ModTime)
+	})
 	d := DraftsDirectory{Name: "Drafts", Files: draftFiles}
 	return d, nil
 }
