@@ -116,15 +116,13 @@ func listDraftDirectory(dirpath string) (DraftsDirectory, error) {
 	if err != nil {
 		return DraftsDirectory{}, err
 	}
-	fmt.Println("I'm going to start iterating through files...")
 	for _, f := range files {
-		fmt.Println(f.Name())
-		draftFiles = append(draftFiles, DraftFile{Filename: f.Name(),
-			Path: filepath.Join(dirpath, f.Name()),
-			IsDir: f.IsDir()})
-		fmt.Printf("Current number of items: %s\n", len(draftFiles))
+		if (filepath.Ext(f.Name()) == ".md" || f.IsDir()) {
+			draftFiles = append(draftFiles, DraftFile{Filename: f.Name(),
+				Path: filepath.Join(dirpath, f.Name()),
+				IsDir: f.IsDir()})
+		}
 	}
-	fmt.Println("Finished listing files")
 	d := DraftsDirectory{Name: "Drafts", Files: draftFiles}
 	return d, nil
 }
