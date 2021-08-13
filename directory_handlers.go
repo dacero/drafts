@@ -1,14 +1,16 @@
 package main
 
 import (
-	"net/http"
-	"io/ioutil"
 	"fmt"
-	"time"
-	"text/template"
+	"io/ioutil"
 	"log"
+	"net/http"
+	"os"
 	"path/filepath"
 	"sort"
+	"strings"
+	"text/template"
+	"time"
 )
 
 type DraftFile struct {
@@ -19,8 +21,22 @@ type DraftFile struct {
 }
 
 type DraftsDirectory struct {
-	Name    string
+	Path    string
 	Files   []DraftFile
+}
+
+
+func (d DraftsDirectory) Breadcrumbs() string {
+	linkTemplate := "<a href='/dir?dir=DIRPATH'>DIRNAME</a> > "
+	dirPath := ""
+	breadcrumb := ""
+	pathComponents := strings.Split(d.Path, string(os.PathSeparator))
+	for _, comp := range pathComponents {
+		dirPath = filepath.Join(dirPath, comp)
+		breadcrumb = breadcrumb + strings.ReplaceAll(strings.ReplaceAll(linkTemplate, "DIRPATH", dirPath), "DIRNAME", comp)
+		log.Printf("Component: %s\n", comp)
+	}
+	return breadcrumb[0:len(breadcrumb)-3]
 }
 
 func viewDirectory(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +47,8 @@ func viewDirectory(w http.ResponseWriter, r *http.Request) {
 	}
 	dirpath := r.FormValue("dir")
 	
-	draftsDir, err := listDraftDirectory("./" + dirpath)
+	draftsDir, err := listDraftDirectory(dirpath)
+	log.Printf("The dir name is: %s", draftsDir.Path)
 	if err != nil {
 		fmt.Fprintf(w, "Error when opening the directory: %s", dirpath)
 		log.Printf("Error when opening the directory: %s", err)
@@ -72,7 +89,7 @@ func listDraftDirectory(dirpath string) (DraftsDirectory, error) {
 	sort.Slice(draftFiles, func(i, j int) bool {
 		return draftFiles[i].ModTime.After(draftFiles[j].ModTime)
 	})
-	d := DraftsDirectory{Name: "Drafts", Files: draftFiles}
+	d := DraftsDirectory{Path: dirpath, Files: draftFiles}
 	return d, nil
 }
 

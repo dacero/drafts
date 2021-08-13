@@ -8,8 +8,11 @@
   </head>
 
   <body>
+    {{$dir := .}}
+    <header class="breadcrumbs">
+      {{$dir.Breadcrumbs}}
+    </header>
     <ul>
-      {{$dir := .}}
       {{range $dir.Files}}
       <li>
 	{{if .IsDir}}
