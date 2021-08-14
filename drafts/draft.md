@@ -1,6 +1,6 @@
 # This is the title 1
 
-It's author is Dámaso Cebrián Robledo
+It's author is Dámaso Cebrián Robledo. Testing to change it.
 
 ## Title 2
 
@@ -21,7 +21,7 @@ hobbit-hole, and that means comfort.
 
 ## The next Title 2
 
-This is now a good way to [test links](http://deliris.net), as they
+This is now a good way to [test links][1], as they
 should be coming this way.
 
 In the next paragraph I should put something else, like a
@@ -65,7 +65,7 @@ Let's start now with the numbered lists:
 Yes, this is a block for images. Let's try this one.
 
 ![The test
-image](https://live.staticflickr.com/65535/51320572635_1440cce835_h.jpg)
+image](https://live.staticflickr.com/65535/51320572635\_1440cce835\_h.jpg)
 
 This is now a block of code:
 
@@ -77,3 +77,5 @@ But now we need to separate paragraphs from with an HR.
 ---
 
 This is another one.
+
+[1]:	http://deliris.net
