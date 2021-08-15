@@ -5,6 +5,8 @@ services:
     image: drafts
     ports:
       - 80:80
+    environment:
+      DRAFTS_KEY: There's no place like home
     command:
       ["/app/bin/drafts"]
     volumes:
