@@ -27,12 +27,12 @@ func main() {
 		HttpOnly: true,
 	}
 
-	
 	r := mux.NewRouter()
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.HandleFunc("/", rootHandler)
 	r.HandleFunc("/view", viewDraftHandler(store))
 	r.HandleFunc("/dir", viewDirectory)
 	r.HandleFunc("/authenticate", authenticate(store))
+	r.HandleFunc("/sync", syncDrafts)
 	log.Fatal(http.ListenAndServe(":80", r))
 }
