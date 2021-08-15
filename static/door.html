@@ -4,10 +4,12 @@
     <title>Drafts Door</title>
     <meta name="author" content="da0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/door.css" type="text/css">
   </head>
 
   <body>
-    <h1>Open this door and bring air to the words.</h1>
+    <header>Open this door and bring air to the words.</header>
+    <img src="/static/door.jpg"/>
     <form action="/authenticate" method="POST">
       <input type="password" id="secret" name="secret" placeholder="Use the door key..."><br>
       <input type="submit" value="Open">

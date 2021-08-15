@@ -1,0 +1,59 @@
+html {
+    background: rgb(40, 40, 40);
+    color: rgb(255, 255, 255, 0.7);
+}
+
+body {
+    max-width: 34em;
+    margin: 3vw auto;
+}
+
+header {
+    margin-top: 4em;
+    font-size: 24px;
+    font-family: "Hoefler Text", Georgia, serif;
+    font-style: italic;
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+    width: 320px;
+    display: block;
+    margin: 8px auto;
+}
+
+#secret {
+    font-family: monospace;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    display: block;
+    font-family: monospace;
+    font-size: 24px;
+    text-align: center;
+    color: white;
+    background: rgb(40, 40, 40);
+    height: 60px;
+    width: 300px;
+    margin: 8px auto;
+    border: 2px solid white;
+    border-radius: 30px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    color: rgb(40, 40, 40);
+    background: white;
+}
+
+
+
