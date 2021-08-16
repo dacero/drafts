@@ -15,6 +15,10 @@ html {
 }
 
 body {
+    margin: 0 3vw;
+}
+
+article {
     font-family: "Hoefler Text", Georgia, serif;
     margin: 0;
     font-size: 24px;
