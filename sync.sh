@@ -1,2 +1,2 @@
 echo "Sync!"
-# rclone sync OneDrive:/archive/txt/drafts ./drafts
+# rclone sync OneDrive:/archive/txt/drafts ./drafts/drafts
