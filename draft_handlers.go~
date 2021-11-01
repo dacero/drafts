@@ -1,5 +1,0 @@
-package main
-
-type Draft struct {
-	Body    string
-}

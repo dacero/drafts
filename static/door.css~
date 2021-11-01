@@ -1,9 +1,0 @@
-html {
-    background: rgb(40, 40, 40);
-}
-
-header {
-    font-size: 16px;
-    font-family: "Hoefler Text", Georgia, serif;
-    font-style: italic;
-}
